@@ -22,7 +22,6 @@ class Seat(models.Model):
         required=True,
         translate=False,
         track_visibility="onchange"
-
     )
 
     player_id = fields.Many2one(

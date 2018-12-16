@@ -24,12 +24,16 @@ class Player(models.Model):
     )
 
     barcode = fields.Char(
-        string="Barcode"
+        string="Barcode",
+        translate=False,
+        track_visibility="onchange"
     )
 
     cfg = fields.Text(
         string="CFG",
-        translate=False
+        translate=False,
+        track_visibility="onchange"
+
     )
 
     note = fields.Html(

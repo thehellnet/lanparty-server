@@ -25,9 +25,9 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="action_barcode_register"
+                        <button name="action_change_player"
                                 type="object"
-                                string="Register barcode"
+                                string="Change player"
                                 class="btn-primary"/>
                     </header>
                     <sheet>

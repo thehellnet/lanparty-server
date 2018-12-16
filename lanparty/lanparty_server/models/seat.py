@@ -5,7 +5,7 @@ class Seat(models.Model):
     _name = "lanparty_server.seat"
     _inherit = "mail.thread"
 
-    _constraints = [
+    _sql_constraints = [
         ("name_uniq", "UNIQUE(name)", "Address already present"),
         ("address_uniq", "UNIQUE(address)", "Address already present")
     ]
@@ -27,6 +27,7 @@ class Seat(models.Model):
 
     player_id = fields.Many2one(
         string="Current player",
+        comodel_name="lanparty_server.player",
         track_visibility="onchange",
         readonly=True
     )

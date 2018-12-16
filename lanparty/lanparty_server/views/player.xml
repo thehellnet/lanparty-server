@@ -9,8 +9,12 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
-                    <field name="partner_id"/>
+                    <field name="res_partner_id"/>
                     <field name="barcode"/>
+                    <button name="action_barcode_register"
+                            type="object"
+                            string="Register barcode"
+                            class="btn-primary"/>
                 </tree>
             </field>
         </record>
@@ -24,9 +28,15 @@
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <group>
-                            <field name="partner_id"/>
+                        <group col="3">
+                            <field name="res_partner_id"/>
+                            <newline/>
                             <field name="barcode"/>
+                            <button name="action_barcode_register"
+                                    type="object"
+                                    string="Register barcode"
+                                    class="btn-primary"/>
+
                         </group>
                         <label for="cfg"/>
                         <field name="cfg"

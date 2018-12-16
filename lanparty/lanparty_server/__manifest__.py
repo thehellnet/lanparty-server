@@ -17,6 +17,8 @@ LAN Party Server for tool API and management
         "views/player.xml",
         "views/seat.xml",
 
+        "wizard/player_barcode_register.xml",
+
         "security/access/player.xml",
         "security/access/seat.xml",
 

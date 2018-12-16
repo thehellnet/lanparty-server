@@ -5,6 +5,10 @@ class Player(models.Model):
     _name = "lanparty_server.player"
     _inherit = "mail.thread"
 
+    _constraints = [
+        ("name_uniq", "UNIQUE(name)", "Name already present")
+    ]
+
     name = fields.Char(
         string="Name",
         reuqired=True,
@@ -16,6 +20,11 @@ class Player(models.Model):
         string="Partner",
         comodel_name="res.partner",
         track_visibility="onchange"
+    )
+
+    cfg = fields.Text(
+        string="CFG",
+        translate=False
     )
 
     note = fields.Html(

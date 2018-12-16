@@ -5,6 +5,11 @@ class Seat(models.Model):
     _name = "lanparty_server.seat"
     _inherit = "mail.thread"
 
+    _constraints = [
+        ("name_uniq", "UNIQUE(name)", "Address already present"),
+        ("address_uniq", "UNIQUE(address)", "Address already present")
+    ]
+
     name = fields.Char(
         string="Name",
         reuqired=True,

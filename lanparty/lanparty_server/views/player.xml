@@ -26,6 +26,10 @@
                         <group>
                             <field name="partner_id"/>
                         </group>
+                        <label for="cfg"/>
+                        <field name="cfg"
+                               class="border border-primary rounded"
+                               widget="ace"/>
                         <notebook>
                             <page string="Note">
                                 <field name="note"/>

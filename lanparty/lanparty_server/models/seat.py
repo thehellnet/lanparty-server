@@ -25,6 +25,12 @@ class Seat(models.Model):
 
     )
 
+    player_id = fields.Many2one(
+        string="Current player",
+        track_visibility="onchange",
+        readonly=True
+    )
+
     note = fields.Html(
         string="Note"
     )

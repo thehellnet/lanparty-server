@@ -25,6 +25,7 @@
                         </h1>
                         <group>
                             <field name="address"/>
+                            <field name="player_id"/>
                         </group>
                         <notebook>
                             <page string="Note">

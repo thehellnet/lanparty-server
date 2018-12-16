@@ -10,8 +10,18 @@ LAN Party Server for tool API and management
     "category": "Other Tools",
     "website": "https://www.thehellnet.org",
     "depends": [
+        "contacts",
+        "mail"
     ],
     "data": [
+        "views/player.xml",
+        "views/seat.xml",
+
+        "security/access/player.xml",
+        "security/access/seat.xml",
+
+        "menu/actions.xml",
+        "menu/items.xml"
     ],
     "installable": True,
     "application": True,

@@ -7,22 +7,17 @@
                   name="LAN Party Server"
                   sequence="0"/>
 
-        <menuitem id="menu_items"
-                  name="Items"
-                  parent="menu_root"
-                  sequence="0"/>
-
         <menuitem id="menu_player_list"
                   name="Players"
-                  parent="menu_items"
+                  parent="menu_root"
                   action="action_player_list"
-                  sequence="0"/>
+                  sequence="1"/>
 
         <menuitem id="menu_seat_list"
                   name="Seats"
-                  parent="menu_items"
+                  parent="menu_root"
                   action="action_seat_list"
-                  sequence="1"/>
+                  sequence="2"/>
 
     </data>
 </odoo>

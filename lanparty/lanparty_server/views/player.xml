@@ -23,20 +23,20 @@
             <field name="name">view_player_form</field>
             <field name="model">lanparty_server.player</field>
             <field name="arch" type="xml">
+                <header>
+                    <button name="action_barcode_register"
+                            type="object"
+                            string="Register barcode"
+                            class="btn-primary"/>
+                </header>
                 <form>
                     <sheet>
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <group col="3">
+                        <group>
                             <field name="res_partner_id"/>
-                            <newline/>
                             <field name="barcode"/>
-                            <button name="action_barcode_register"
-                                    type="object"
-                                    string="Register barcode"
-                                    class="btn-primary"/>
-
                         </group>
                         <label for="cfg"/>
                         <field name="cfg"

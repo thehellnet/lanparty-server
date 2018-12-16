@@ -35,3 +35,18 @@ class Seat(models.Model):
     note = fields.Html(
         string="Note"
     )
+
+    def action_change_player(self):
+        self.ensure_one()
+
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Register barcode",
+            "res_model": "lanparty_server.wizard_seat_player_change",
+            "view_type": "form",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_seat_id": self.id
+            }
+        }

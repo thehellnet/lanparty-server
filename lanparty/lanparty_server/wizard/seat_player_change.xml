@@ -3,17 +3,18 @@
 <odoo>
     <data noupdate="0">
 
-        <record model="ir.ui.view" id="view_wizard_player_barcode_register_form">
-            <field name="name">view_wizard_player_barcode_register_form</field>
-            <field name="model">lanparty_server.wizard_player_barcode_register</field>
+        <record model="ir.ui.view" id="view_wizard_seat_player_change_form">
+            <field name="name">view_wizard_seat_player_change_form</field>
+            <field name="model">lanparty_server.wizard_seat_player_change</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
                         <h1>
-                            <field name="player_id"/>
+                            <field name="seat_id"/>
                         </h1>
                         <group>
                             <field name="barcode"/>
+                            <field name="player_id"/>
                         </group>
                     </sheet>
                     <footer>
@@ -21,9 +22,9 @@
                                 special="cancel"
                                 string="Cancel"
                                 class="btn-secondary"/>
-                        <button name="action_barcode_register"
+                        <button name="action_player_change"
                                 type="object"
-                                string="Register barcode"
+                                string="Change player"
                                 class="btn-primary pull-right"/>
                     </footer>
                 </form>

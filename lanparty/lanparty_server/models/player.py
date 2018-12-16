@@ -6,7 +6,8 @@ class Player(models.Model):
     _inherit = "mail.thread"
 
     _constraints = [
-        ("name_uniq", "UNIQUE(name)", "Name already present")
+        ("name_uniq", "UNIQUE(name)", "Name already present"),
+        ("barcode_uniq", "UNIQUE(barcode)", "Barcode already present")
     ]
 
     name = fields.Char(
@@ -20,6 +21,11 @@ class Player(models.Model):
         string="Partner",
         comodel_name="res.partner",
         track_visibility="onchange"
+    )
+
+    barcode = fields.Char(
+        string="Barcode",
+        readonly=True
     )
 
     cfg = fields.Text(

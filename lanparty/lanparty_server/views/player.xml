@@ -10,6 +10,7 @@
                 <tree>
                     <field name="name"/>
                     <field name="partner_id"/>
+                    <field name="barcode"/>
                 </tree>
             </field>
         </record>
@@ -25,6 +26,7 @@
                         </h1>
                         <group>
                             <field name="partner_id"/>
+                            <field name="barcode"/>
                         </group>
                         <label for="cfg"/>
                         <field name="cfg"

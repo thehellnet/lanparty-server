@@ -33,7 +33,6 @@ class Player(models.Model):
         string="CFG",
         translate=False,
         track_visibility="onchange"
-
     )
 
     note = fields.Html(

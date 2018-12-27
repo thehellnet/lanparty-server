@@ -19,5 +19,11 @@
                   action="action_seat_list"
                   sequence="2"/>
 
+        <menuitem id="menu_party_list"
+                  name="Parties"
+                  parent="menu_root"
+                  action="action_party_list"
+                  sequence="3"/>
+
     </data>
 </odoo>

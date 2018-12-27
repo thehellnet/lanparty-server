@@ -16,12 +16,14 @@ LAN Party Server for tool API and management
     "data": [
         "views/player.xml",
         "views/seat.xml",
+        "views/party.xml",
 
         "wizard/player_barcode_register.xml",
         "wizard/seat_player_change.xml",
 
         "security/access/player.xml",
         "security/access/seat.xml",
+        "security/access/party.xml",
 
         "menu/actions.xml",
         "menu/items.xml"

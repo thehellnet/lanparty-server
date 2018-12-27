@@ -3,8 +3,8 @@
 <odoo>
     <data noupdate="0">
 
-        <record model="ir.model.access" id="access_lanparty_server_player">
-            <field name="name">access_lanparty_server_player</field>
+        <record model="ir.model.access" id="access_player">
+            <field name="name">access_player</field>
             <field name="model_id" ref="model_lanparty_server_player"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>

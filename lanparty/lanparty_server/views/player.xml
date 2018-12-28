@@ -29,6 +29,14 @@
                                 type="object"
                                 string="Register barcode"
                                 class="btn-primary"/>
+                        <button name="action_cfg_export"
+                                type="object"
+                                string="Export CFG"
+                                class="btn-default"/>
+                        <button name="action_cfg_import"
+                                type="object"
+                                string="Import CFG"
+                                class="btn-danger"/>
                     </header>
                     <sheet>
                         <h1>

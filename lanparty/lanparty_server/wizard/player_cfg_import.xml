@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.ui.view" id="view_wizard_player_cfg_import_form">
+            <field name="name">view_wizard_player_cfg_import_form</field>
+            <field name="model">lanparty_server.wizard_player_cfg_import</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <h1>
+                            <field name="player_id"/>
+                        </h1>
+                        <group>
+                            <field name="cfg_file_name" invisible="1"/>
+                            <field name="cfg_file"
+                                   widget="binary"
+                                   filename="cfg_file_name"/>
+                        </group>
+                        <label for="cfg"/>
+                        <field name="cfg"
+                               class="border border-primary rounded"
+                               widget="ace"/>
+                    </sheet>
+                    <footer>
+                        <button type="object"
+                                special="cancel"
+                                string="Cancel"
+                                class="btn-secondary"/>
+                        <button name="action_save"
+                                type="object"
+                                string="Save"
+                                class="btn-primary pull-right"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

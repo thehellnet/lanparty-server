@@ -24,7 +24,7 @@ class ToolController(http.Controller):
         cors="*",
         csrf=False
     )
-    def welcome(self, **kwargs):
+    def get_cfg(self, **kwargs):
         if "barcode" not in kwargs:
             return {
                 "success": False,
@@ -40,7 +40,6 @@ class ToolController(http.Controller):
                 "success": False,
                 "error": _("No player found for given barcode")
             }
-
 
         return {
             "success": True

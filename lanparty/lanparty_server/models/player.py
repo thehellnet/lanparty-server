@@ -89,7 +89,13 @@ class Player(models.Model):
             line_start = None
 
             items = shlex.split(default_cfg_line)
-            if items[0] == "bind":
+            if items[0] == "seta":
+                if items[1] == "name":
+                    continue
+
+                line_start = " ".join(items[0:2])
+
+            elif items[0] == "bind":
                 line_start = " ".join(items[0:2])
 
             if line_start:

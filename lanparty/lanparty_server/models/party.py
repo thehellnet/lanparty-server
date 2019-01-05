@@ -70,5 +70,11 @@ class Party(models.Model):
         self.ensure_one()
 
         cfg = self.cfg and str(self.cfg) or ""
-        cfg_lines = cfg.splitlines()
-        return list(cfg_lines)
+        cfg_lines = self.list_uniq(cfg.splitlines())
+        return cfg_lines
+
+    @staticmethod
+    def list_uniq(seq):
+        seen = set()
+        seen_add = seen.add
+        return [x for x in seq if not (x in seen or seen_add(x))]

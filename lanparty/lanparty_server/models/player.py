@@ -1,3 +1,5 @@
+import shlex
+
 from odoo import models, fields
 
 
@@ -86,9 +88,9 @@ class Player(models.Model):
 
             line_start = None
 
-            items = default_cfg_line.split()
+            items = shlex.split(default_cfg_line)
             if items[0] == "bind":
-                line_start = " ".join(items[0:1])
+                line_start = " ".join(items[0:2])
 
             if line_start:
                 for cfg_line in cfg_lines:

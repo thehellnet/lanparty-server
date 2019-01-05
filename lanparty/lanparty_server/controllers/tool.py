@@ -17,7 +17,7 @@ class ToolController(http.Controller):
         }
 
     @http.route(
-        route="/ap1/v1/tool/getCfg",
+        route="/ap1/v1/tool/get_cfg",
         type="json",
         auth="public",
         methods=["POST"],
@@ -41,6 +41,10 @@ class ToolController(http.Controller):
                 "error": _("No player found for given barcode")
             }
 
+        raw_cfg = player_id.get_party_cfg()
+        cfg_lines = raw_cfg.splitlines()
+
         return {
-            "success": True
+            "success": True,
+            "data": cfg_lines
         }

@@ -42,8 +42,32 @@ class Party(models.Model):
     def action_cfg_export(self):
         self.ensure_one()
 
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Import CFG",
+            "res_model": "lanparty_server.wizard_export",
+            "view_type": "form",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_cfg": self.get_cfg()
+            }
+        }
+
     def action_cfg_import(self):
         self.ensure_one()
+
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Import CFG",
+            "res_model": "lanparty_server.wizard_party_cfg_import",
+            "view_type": "form",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_party_id": self.id
+            }
+        }
 
     @api.model
     def get_default_party(self):
@@ -56,17 +80,11 @@ class Party(models.Model):
         return party_id
 
     @api.model
-    def get_default_cfg_lines(self):
-        party_obj = self.sudo()
+    def get_default_cfg(self):
+        party_id = self.get_default_party()
+        return party_id.get_cfg()
 
-        party_id = party_obj.search([("default", "=", True)], limit=1)
-        if not party_id:
-            raise ValidationError(_("No default party set"))
-
-        cfg_lines = party_id.get_cfg_lines()
-        return cfg_lines
-
-    def get_cfg_lines(self):
+    def get_cfg(self):
         self.ensure_one()
 
         cfg = self.cfg and str(self.cfg) or ""

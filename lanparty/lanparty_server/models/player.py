@@ -1,5 +1,3 @@
-import shlex
-
 from odoo import models, fields
 
 
@@ -56,6 +54,21 @@ class Player(models.Model):
             }
         }
 
+    def action_cfg_export(self):
+        self.ensure_one()
+
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Import CFG",
+            "res_model": "lanparty_server.wizard_export",
+            "view_type": "form",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_cfg": self.get_party_cfg()
+            }
+        }
+
     def action_cfg_import(self):
         self.ensure_one()
 
@@ -71,46 +84,31 @@ class Player(models.Model):
             }
         }
 
-    def get_party_cfg(self):
-        self.ensure_one()
-
-        party_obj = self.env["lanparty_server.party"].sudo()
-
-        final_cfg_lines = [
-            "name \"%s\"" % self.name
-        ]
-
-        default_cfg_lines = party_obj.get_default_cfg_lines()
-        cfg_lines = self.get_cfg_lines()
-
-        for default_cfg_line in default_cfg_lines:
-            line_add = default_cfg_line
-
-            line_start = None
-
-            items = shlex.split(default_cfg_line)
-            if items[0] == "seta":
-                if items[1] == "name":
-                    continue
-
-                line_start = " ".join(items[0:2])
-
-            elif items[0] == "bind":
-                line_start = " ".join(items[0:2])
-
-            if line_start:
-                for cfg_line in cfg_lines:
-                    if cfg_line.startswith(line_start):
-                        line_add = cfg_line
-                        break
-
-            final_cfg_lines.append(line_add)
-
-        return "\n".join(final_cfg_lines)
-
-    def get_cfg_lines(self):
+    def get_cfg(self):
         self.ensure_one()
 
         cfg = self.cfg and str(self.cfg) or ""
         cfg_lines = cfg.splitlines()
         return list(cfg_lines)
+
+    def get_party_cfg(self):
+        self.ensure_one()
+
+        party_obj = self.env["lanparty_server.party"].sudo()
+        utility_cfg = self.env["lanparty_server.utility_cfg"].sudo()
+
+        cfg_lines = [
+            "unbindall"
+        ]
+
+        cfg_default = party_obj.get_default_cfg()
+        cfg_player = self.get_cfg()
+        cfg = utility_cfg.compare(cfg_default, cfg_player)
+        cfg_lines.extend(cfg)
+
+        cfg_lines.extend([
+            "name \"%s\"" % self.name,
+            "say %s collegato" % self.name
+        ])
+
+        return cfg_lines

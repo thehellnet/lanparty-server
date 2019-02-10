@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.ui.view" id="view_wizard_cfg_export_form">
+            <field name="name">view_wizard_cfg_export_form</field>
+            <field name="model">lanparty_server.wizard_cfg_export</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <label for="cfg"/>
+                        <field name="cfg"
+                               class="border border-primary rounded"
+                               widget="ace"/>
+                    </sheet>
+                    <footer>
+                        <button type="object"
+                                special="cancel"
+                                string="Close"
+                                class="btn-secondary"/>
+                        <button name="action_download"
+                                type="object"
+                                string="Download"
+                                class="btn-primary pull-right"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

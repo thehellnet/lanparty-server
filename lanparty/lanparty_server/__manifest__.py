@@ -21,6 +21,7 @@ LAN Party Server for tool API and management
         "wizard/player_barcode_register.xml",
         "wizard/seat_player_change.xml",
         "wizard/player_cfg_import.xml",
+        "wizard/party_cfg_import.xml",
 
         "security/access/player.xml",
         "security/access/seat.xml",

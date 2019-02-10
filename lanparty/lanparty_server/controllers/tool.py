@@ -41,8 +41,7 @@ class ToolController(http.Controller):
                 "error": _("No player found for given barcode")
             }
 
-        raw_cfg = player_id.get_party_cfg()
-        cfg_lines = raw_cfg.splitlines()
+        cfg_lines = player_id.get_party_cfg()
 
         return {
             "success": True,

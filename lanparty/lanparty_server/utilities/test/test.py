@@ -19,7 +19,7 @@ class CfgUtility:
         elif row_command in ["seta"]:
             param = " ".join(items[0:2]).lower()
             value = " ".join(items[2:]).lower()
-        elif row_command in ["sensitivity", "name"]:
+        elif row_command in ["sensitivity", "name", "say"]:
             param = " ".join(items[0:1]).lower()
             value = " ".join(items[1:]).lower()
         else:
@@ -29,16 +29,16 @@ class CfgUtility:
         return param, value
 
     @staticmethod
-    def compare(cfg_default=None, cfg_user=None):
+    def compare(cfg_default=None, cfg_player=None):
         if cfg_default is None:
             cfg_default = {}
-        if cfg_user is None:
-            cfg_user = {}
+        if cfg_player is None:
+            cfg_player = {}
 
         cfg = {}
 
         for key, default_value in cfg_default.items():
-            cfg[key] = cfg_user[key] if key in cfg_user else cfg_default[key]
+            cfg[key] = cfg_player[key] if key in cfg_player else cfg_default[key]
 
         return cfg
 
@@ -50,7 +50,7 @@ class CfgUtility:
         return_cfg = {}
 
         for key, value in cfg.items():
-            if key not in ["unbindall", "name", "seta name"]:
+            if key not in ["unbindall", "name", "seta name", "say"]:
                 return_cfg[key] = value
 
         return return_cfg
@@ -104,6 +104,9 @@ class TestCfg(TestCase):
             "bind F +testing": ("bind F", "+testing"),
             "sensitivity \"5\"": ("sensitivity", "5"),
             "sensitivity 5": ("sensitivity", "5"),
+            "say tset": ("say", "tset"),
+            "say \"tset\"": ("say", "tset"),
+            "say 'tset'": ("say", "tset"),
             "unbindall": ("unbindall", ""),
         }
 
@@ -182,6 +185,7 @@ class TestCfg(TestCase):
             "bind B": "test",
             "seta cg_fov": "65",
             "unbindall": "",
+            "say": "test",
             "sensitivity": "5"
         }
 

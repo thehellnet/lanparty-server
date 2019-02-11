@@ -33,12 +33,11 @@ class PartyCfgImportWizard(models.TransientModel):
         if not self.cfg_file:
             return
 
-        file_cfg_raw = base64.b64decode(self.cfg_file).decode()
-
         utility_cfg = self.env["lanparty_server.utility_cfg"].sudo()
-        cfg_file = utility_cfg.cfg_split_lines(file_cfg_raw)
 
-        self.cfg = "\n".join(cfg_file)
+        cfg_raw = base64.b64decode(self.cfg_file).decode()
+        cfg = utility_cfg.parse(cfg_raw)
+        self.cfg = utility_cfg.serialize(cfg)
 
     def action_save(self):
         self.ensure_one()

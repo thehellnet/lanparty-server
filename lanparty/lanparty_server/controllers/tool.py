@@ -34,6 +34,9 @@ class ToolController(http.Controller):
         barcode = kwargs["barcode"]
 
         player_obj = request.env["lanparty_server.player"].sudo()
+        party_obj = request.env["lanparty_server.party"].sudo()
+        utility_cfg = request.env["lanparty_server.utility_cfg"]
+
         player_id = player_obj.search([("barcode", "=", barcode)], limit=1)
         if not player_id:
             return {
@@ -41,7 +44,19 @@ class ToolController(http.Controller):
                 "error": _("No player found for given barcode")
             }
 
-        cfg_lines = player_id.get_party_cfg()
+        cfg_default = party_obj.get_default_party().get_cfg()
+        cfg_player = player_id.get_cfg()
+        cfg = utility_cfg.compare(cfg_default=cfg_default, cfg_player=cfg_player)
+
+        cfg_raw = utility_cfg.serialize(cfg)
+
+        cfg_lines = [
+            "unbindall"
+        ]
+
+        cfg_lines.extend(cfg_raw.splitlines())
+
+        cfg_lines.append("name \"%s\"" % player_id.name)
 
         return {
             "success": True,

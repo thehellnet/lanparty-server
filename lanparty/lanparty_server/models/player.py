@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class Player(models.Model):
@@ -38,6 +38,28 @@ class Player(models.Model):
     note = fields.Html(
         string="Note"
     )
+
+    @api.model
+    def create(self, values):
+
+        if "cfg" in values:
+            utility_cfg = self.env["lanparty_server.utility_cfg"]
+            cfg_raw = values["cfg"]
+            cfg = utility_cfg.parse(cfg_raw)
+            values["cfg"] = utility_cfg.serialize(cfg)
+
+        return super().create(values)
+
+    @api.multi
+    def write(self, values):
+
+        if "cfg" in values:
+            utility_cfg = self.env["lanparty_server.utility_cfg"]
+            cfg_raw = values["cfg"]
+            cfg = utility_cfg.parse(cfg_raw)
+            values["cfg"] = utility_cfg.serialize(cfg)
+
+        return super().write(values)
 
     def action_barcode_register(self):
         self.ensure_one()
@@ -87,28 +109,7 @@ class Player(models.Model):
     def get_cfg(self):
         self.ensure_one()
 
-        cfg = self.cfg and str(self.cfg) or ""
-        cfg_lines = cfg.splitlines()
-        return list(cfg_lines)
+        utility_cfg = self.env["lanparty_server.utility_cfg"]
 
-    def get_party_cfg(self):
-        self.ensure_one()
-
-        party_obj = self.env["lanparty_server.party"].sudo()
-        utility_cfg = self.env["lanparty_server.utility_cfg"].sudo()
-
-        cfg_lines = [
-            "unbindall"
-        ]
-
-        cfg_default = party_obj.get_default_cfg()
-        cfg_player = self.get_cfg()
-        cfg = utility_cfg.compare(cfg_default, cfg_player)
-        cfg_lines.extend(cfg)
-
-        cfg_lines.extend([
-            "name \"%s\"" % self.name,
-            "say %s collegato" % self.name
-        ])
-
-        return cfg_lines
+        cfg_raw = self.cfg and str(self.cfg) or ""
+        return utility_cfg.parse(cfg_raw)

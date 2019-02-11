@@ -33,17 +33,11 @@ class PlayerCfgImportWizard(models.TransientModel):
         if not self.cfg_file:
             return
 
-        file_cfg_raw = base64.b64decode(self.cfg_file).decode()
-        cfg_file = file_cfg_raw.splitlines()
+        utility_cfg = self.env["lanparty_server.utility_cfg"].sudo()
 
-        party_obj = self.env["lanparty_server.party"].sudo()
-        cfg_utility = self.env["lanparty_server.utility_cfg"].sudo()
-
-        cfg_default = party_obj.get_default_cfg()
-        cfg = cfg_utility.compare(cfg_default, cfg_file)
-
-        cfg_player = cfg_utility.remove_common_lines(cfg, cfg_default)
-        self.cfg = "\n".join(cfg_utility.remove_forbidden_commands(cfg_player))
+        cfg_raw = base64.b64decode(self.cfg_file).decode()
+        cfg = utility_cfg.parse(cfg_raw)
+        self.cfg = utility_cfg.serialize(cfg)
 
     def action_save(self):
         self.ensure_one()

@@ -5,98 +5,82 @@ from odoo import models
 
 class CfgUtility(models.TransientModel):
     _name = "lanparty_server.utility_cfg"
+    _description = "Utility for CFG parsing"
 
     @staticmethod
-    def cfg_split_lines(cfg_raw):
-        return [x.strip() for x in cfg_raw.splitlines()]
+    def split_lines(cfg_raw):
+        return [x.strip() for x in cfg_raw.splitlines() if x.strip()]
 
     @staticmethod
-    def cfg_split_command(command_raw):
-        return [x.strip() for x in shlex.split(command_raw)]
-
-    @staticmethod
-    def remove_forbidden_commands(cfg=None):
-        if cfg is None:
-            cfg = []
-
-        return [x for x in cfg if x not in ["unbindall", "name", "say"]]
-
-    @staticmethod
-    def remove_common_lines(cfg_default=None, cfg_user=None):
-        if cfg_default is None:
-            cfg_default = []
-        if cfg_user is None:
-            cfg_user = []
-
-        return list(set(cfg_user) ^ set(cfg_default))
-
-    def compare_command(self, default="", cfg_user=None):
-        if cfg_user is None:
-            cfg_user = []
-
-        items = self.cfg_split_command(default)
+    def split_command(command_raw):
+        items = [x.strip() for x in shlex.split(command_raw)]
 
         row_command = items[0].lower()
 
-        if row_command in ["unbindall", "name", "say"]:
-            return False
+        if row_command in ["bind"]:
+            param = " ".join([items[0].lower(), items[1].upper()])
+            value = " ".join(items[2:]).lower()
+        elif row_command in ["seta"]:
+            param = " ".join(items[0:2]).lower()
+            value = " ".join(items[2:]).lower()
+        elif row_command in ["sensitivity", "name", "say"]:
+            param = " ".join(items[0:1]).lower()
+            value = " ".join(items[1:]).lower()
+        else:
+            param = " ".join(items).lower()
+            value = ""
 
-        elif row_command == "bind":
-            for cfg_user_row in cfg_user:
-                row_items = self.cfg_split_command(cfg_user_row)
-                if row_items[0].lower() == row_command and row_items[1].upper() == items[1].upper():
-                    return cfg_user_row
+        return param, value
 
-        elif row_command == "seta":
-            for cfg_user_row in cfg_user:
-                row_items = self.cfg_split_command(cfg_user_row)
-                if row_items[0].lower() == row_command and row_items[1].upper() == items[1].upper():
-                    return cfg_user_row
-
-        elif row_command == "sensitivity":
-            for cfg_user_row in cfg_user:
-                row_items = self.cfg_split_command(cfg_user_row)
-                if row_items[0].lower() == row_command:
-                    return cfg_user_row
-
-        return default
-
-    def compare(self, cfg_default=None, cfg_user=None):
+    @staticmethod
+    def compare(cfg_default=None, cfg_player=None):
         if cfg_default is None:
-            cfg_default = []
-        if cfg_user is None:
-            cfg_user = []
+            cfg_default = {}
+        if cfg_player is None:
+            cfg_player = {}
 
-        cfg = []
+        cfg = {}
 
-        for cfg_default_row in cfg_default:
-            row = self.compare_command(cfg_default_row, cfg_user)
-            if not row:
-                continue
-            cfg.append(row)
-
-        cfg = self.remove_duplicated(cfg)
+        for key, default_value in cfg_default.items():
+            cfg[key] = cfg_player[key] if key in cfg_player else cfg_default[key]
 
         return cfg
 
-    def remove_duplicated(self, cfg):
-        cfg_items = {}
+    @staticmethod
+    def remove_forbidden(cfg=None):
+        if cfg is None:
+            cfg = {}
 
-        for cfg_row in cfg:
-            items = self.cfg_split_command(cfg_row)
-            row_command = items[0].lower()
+        return_cfg = {}
 
-            if row_command in ["bind", "seta"]:
-                key = " ".join(items[0:2])
-                value = " ".join(items[2:])
-            elif row_command in ["sensitivity"]:
-                key = " ".join(items[0:1])
-                value = " ".join(items[1:])
+        for key, value in cfg.items():
+            if key not in ["unbindall", "name", "seta name", "say"]:
+                return_cfg[key] = value
+
+        return return_cfg
+
+    @staticmethod
+    def parse(raw=""):
+        lines = CfgUtility.split_lines(raw)
+        cfg = {}
+
+        for line in lines:
+            key, value = CfgUtility.split_command(line)
+            cfg[key] = value
+
+        return CfgUtility.remove_forbidden(cfg)
+
+    @staticmethod
+    def serialize(cfg=None):
+        if cfg is None:
+            cfg = {}
+
+        lines = []
+
+        for key, value in cfg.items():
+            if value:
+                lines.append("%s \"%s\"" % (key, value))
             else:
-                continue
+                lines.append("%s" % key)
 
-            cfg_items[key] = value
-
-        cfg = ["%s \"%s\"" % (key, value) for key, value in cfg_items.items()]
-
-        return cfg
+        return "\n".join(lines) + "\n"

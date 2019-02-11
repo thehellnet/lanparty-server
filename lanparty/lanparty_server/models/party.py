@@ -30,6 +30,28 @@ class Party(models.Model):
         string="Note"
     )
 
+    @api.model
+    def create(self, values):
+
+        if "cfg" in values:
+            utility_cfg = self.env["lanparty_server.utility_cfg"]
+            cfg_raw = values["cfg"]
+            cfg = utility_cfg.parse(cfg_raw)
+            values["cfg"] = utility_cfg.serialize(cfg)
+
+        return super().create(values)
+
+    @api.multi
+    def write(self, values):
+
+        if "cfg" in values:
+            utility_cfg = self.env["lanparty_server.utility_cfg"]
+            cfg_raw = values["cfg"]
+            cfg = utility_cfg.parse(cfg_raw)
+            values["cfg"] = utility_cfg.serialize(cfg)
+
+        return super().write(values)
+
     def action_default_set(self):
         self.ensure_one()
 
@@ -79,20 +101,10 @@ class Party(models.Model):
 
         return party_id
 
-    @api.model
-    def get_default_cfg(self):
-        party_id = self.get_default_party()
-        return party_id.get_cfg()
-
     def get_cfg(self):
         self.ensure_one()
 
-        cfg = self.cfg and str(self.cfg) or ""
-        cfg_lines = self.list_uniq(cfg.splitlines())
-        return cfg_lines
+        utility_cfg = self.env["lanparty_server.utility_cfg"]
 
-    @staticmethod
-    def list_uniq(seq):
-        seen = set()
-        seen_add = seen.add
-        return [x for x in seq if not (x in seen or seen_add(x))]
+        cfg_raw = self.cfg and str(self.cfg) or ""
+        return utility_cfg.parse(cfg_raw)

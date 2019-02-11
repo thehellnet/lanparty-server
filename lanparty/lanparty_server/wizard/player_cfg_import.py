@@ -5,6 +5,7 @@ from odoo import models, fields, api
 
 class PlayerCfgImportWizard(models.TransientModel):
     _name = "lanparty_server.wizard_player_cfg_import"
+    _description = "CFG import wizard for player"
 
     player_id = fields.Many2one(
         string="Player",

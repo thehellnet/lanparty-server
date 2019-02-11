@@ -3,6 +3,7 @@ from odoo import models, fields, api
 
 class SeatPlayerChangeWizard(models.TransientModel):
     _name = "lanparty_server.wizard_seat_player_change"
+    _description = "Wizard for changing player seat"
 
     seat_id = fields.Many2one(
         string="Seat",

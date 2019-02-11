@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError
 
 class PlayerBarcodeRegisterWizard(models.TransientModel):
     _name = "lanparty_server.wizard_player_barcode_register"
+    _description = "Wizard for registering barcode to player"
 
     player_id = fields.Many2one(
         string="Player",

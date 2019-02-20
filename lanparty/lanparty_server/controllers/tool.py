@@ -56,6 +56,7 @@ class ToolController(http.Controller):
 
         cfg_lines.extend(cfg_raw.splitlines())
 
+        cfg_lines.append("bind . \"exec lanpartytool\"")
         cfg_lines.append("name \"%s\"" % player_id.name)
 
         return {
